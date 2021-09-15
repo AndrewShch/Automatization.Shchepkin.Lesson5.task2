@@ -31,11 +31,11 @@ public class DataGenerator {
             .build();
 
     @BeforeAll
-    static void setUpAll(RegistrationInfo info) {
+    static void setUpAll(RegistrationInfo registrationInfo) {
         // сам запрос
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
-                .body(info) // передаём в теле объект, который будет преобразован в JSON
+                .body(registrationInfo) // передаём в теле объект, который будет преобразован в JSON
                 .when() // "когда"
                 .post("/api/system/users") // на какой путь, относительно BaseUri отправляем запрос
                 .then() // "тогда ожидаем"
@@ -45,15 +45,62 @@ public class DataGenerator {
     public static class Registration {
         private Registration() {
         }
-    }
 
-    public static String getLogin() {
-        return faker.name().username();
-    }
+        public static String randomLogin() {
+            return faker.name().username();
+        }
 
-    public static String getPassword() {
-        return faker.internet().password();
-    }
+        public static String randomPassword() {
+            return faker.internet().password();
+        }
 
+
+        public static RegistrationInfo validLogin() {
+            RegistrationInfo registrationInfo = new RegistrationInfo(
+                    randomLogin(),
+                    randomPassword(),
+                    "active");
+            setUpAll(registrationInfo);
+            return registrationInfo;
+        }
+
+        public static RegistrationInfo noValidLogin() {
+            RegistrationInfo registrationInfo = new RegistrationInfo(
+                    randomLogin(),
+                    randomPassword(),
+                    "blocked");
+            setUpAll(registrationInfo);
+            return registrationInfo;
+        }
+
+
+        public static RegistrationInfo wrongPassword() {
+            String password = randomPassword();
+            RegistrationInfo registrationInfo = new RegistrationInfo(
+                    randomLogin(),
+                    password,
+                    "active");
+            setUpAll(registrationInfo);
+            return new RegistrationInfo(
+                    randomLogin(),
+                    password,
+                    "active");
+        }
+        public static RegistrationInfo wrongLogin() {
+            String login = randomLogin();
+            RegistrationInfo registrationInfo = new RegistrationInfo(
+                    login,
+                    randomPassword(),
+                    "active");
+            setUpAll(registrationInfo);
+            return new RegistrationInfo(
+                    login,
+                    randomPassword(),
+                    "active");
+        }
+
+    }
 
 }
+
+
