@@ -20,15 +20,15 @@ public class RegistrationUsersTest {
 
     @Test
     void shouldSuccessTest() {
-        RegistrationInfo validUser = DataGenerator.Registration.validLogin();
+        RegistrationInfo validUser = DataGenerator.Registration.shouldValidLogin();
         $("[data-test-id=login] input").setValue(validUser.getLogin());
         $("[data-test-id=password] input").setValue(validUser.getPassword());
         $("button[data-test-id=action-login]").click();
-        $(".App_appContainer__3jRx1").shouldBe(appear).shouldHave(text("Личный кабинет"));
+        $(withText("Личный кабинет")).shouldBe(appear);
     }
     @Test
     void noValidUser(){
-        RegistrationInfo noValidUser = DataGenerator.Registration.noValidLogin();
+        RegistrationInfo noValidUser = DataGenerator.Registration.shouldNoValidLogin();
         $("[data-test-id=login] input").setValue(noValidUser.getLogin());
         $("[data-test-id=password] input").setValue(noValidUser.getPassword());
         $("button[data-test-id=action-login]").click();
@@ -36,7 +36,7 @@ public class RegistrationUsersTest {
     }
 @Test
     void noValidPassword(){
-        RegistrationInfo wrongPassword = DataGenerator.Registration.wrongPassword();
+        RegistrationInfo wrongPassword = DataGenerator.Registration.shouldGetInvalidPassword();
     $("[data-test-id=login] input").setValue(wrongPassword.getLogin());
     $("[data-test-id=password] input").setValue(wrongPassword.getPassword());
     $("button[data-test-id=action-login]").click();
@@ -44,7 +44,7 @@ public class RegistrationUsersTest {
 }
     @Test
     void noValidLogin(){
-        RegistrationInfo wrongLogin = DataGenerator.Registration.wrongLogin();
+        RegistrationInfo wrongLogin = DataGenerator.Registration.shouldGetInvalidLogin();
         $("[data-test-id=login] input").setValue(wrongLogin.getLogin());
         $("[data-test-id=password] input").setValue(wrongLogin.getPassword());
         $("button[data-test-id=action-login]").click();

@@ -31,7 +31,7 @@ public class DataGenerator {
             .build();
 
     @BeforeAll
-    static void setUpAll(RegistrationInfo registrationInfo) {
+    static void makeRequest(RegistrationInfo registrationInfo) {
         // сам запрос
         given() // "дано"
                 .spec(requestSpec) // указываем, какую спецификацию используем
@@ -55,44 +55,44 @@ public class DataGenerator {
         }
 
 
-        public static RegistrationInfo validLogin() {
+        public static RegistrationInfo shouldValidLogin() {
             RegistrationInfo registrationInfo = new RegistrationInfo(
                     randomLogin(),
                     randomPassword(),
                     "active");
-            setUpAll(registrationInfo);
+            makeRequest(registrationInfo);
             return registrationInfo;
         }
 
-        public static RegistrationInfo noValidLogin() {
+        public static RegistrationInfo shouldNoValidLogin() {
             RegistrationInfo registrationInfo = new RegistrationInfo(
                     randomLogin(),
                     randomPassword(),
                     "blocked");
-            setUpAll(registrationInfo);
+            makeRequest(registrationInfo);
             return registrationInfo;
         }
 
 
-        public static RegistrationInfo wrongPassword() {
+        public static RegistrationInfo shouldGetInvalidLogin() {
             String password = randomPassword();
             RegistrationInfo registrationInfo = new RegistrationInfo(
                     randomLogin(),
                     password,
                     "active");
-            setUpAll(registrationInfo);
+            makeRequest(registrationInfo);
             return new RegistrationInfo(
                     randomLogin(),
                     password,
                     "active");
         }
-        public static RegistrationInfo wrongLogin() {
+        public static RegistrationInfo shouldGetInvalidPassword() {
             String login = randomLogin();
             RegistrationInfo registrationInfo = new RegistrationInfo(
                     login,
                     randomPassword(),
                     "active");
-            setUpAll(registrationInfo);
+            makeRequest(registrationInfo);
             return new RegistrationInfo(
                     login,
                     randomPassword(),
